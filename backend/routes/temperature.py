@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, Body, HTTPException
-from backend.models import TemperatureModel, TemeratureCollection, UserModel
+from backend.models import TemperatureModel, TemeratureCollection
 from backend.database import temperature_collection
 from backend.routes.auth import get_current_user
 
@@ -25,7 +25,7 @@ async def add_temperature(temperature: TemperatureModel = Body(...), current_use
 async def get_temperature():
     try:
         return TemeratureCollection(
-            temperatures=await temperature_collection.find().to_list(10)
+            temperatures = await temperature_collection.find().to_list(10)
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

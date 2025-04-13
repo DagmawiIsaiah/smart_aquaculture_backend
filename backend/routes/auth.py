@@ -1,4 +1,6 @@
+import json
 from fastapi import APIRouter, Request, Response, status, HTTPException, Depends
+from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordRequestForm
 import jwt
 
@@ -15,9 +17,9 @@ router = APIRouter(prefix="/token", tags=["Auth"])
 
 async def authenticate_user(username: str, password: str):
     user = await user_collection.find_one({"email": username})
-    db_password = user["password"]
     if not user:
         return False
+    db_password = user["password"]
     if not verify_password(password, db_password):
         return False
     return user
@@ -63,7 +65,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 @router.post("/")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-) -> Token:
+):
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -75,4 +77,6 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user["password"]}, expires_delta=access_token_expires
     )
-    return Token(access_token=access_token, token_type="bearer")
+    
+    user = await user_collection.find_one({"email": form_data.username})
+    return {"access_token": access_token, "token_type": "bearer", "username": user["name"]}
