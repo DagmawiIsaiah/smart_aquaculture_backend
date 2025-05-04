@@ -19,10 +19,6 @@ class UserModel(BaseModel):
     name: str = Field(...)
     email: EmailStr = Field(...)
     password: str = Field(...)
-    api_key: str = Field(...)
-    status: bool = Field(...)
-    created_at: datetime = Field(
-        default_factory=datetime.now())
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -32,9 +28,6 @@ class UserModel(BaseModel):
                 "name": "Jane Doe",
                 "email": "jdoe@example.com",
                 "password": "sdf894s6f2se984fsef",
-                "api_key": "sdf894s6f2se984fsef",
-                "status": True,
-                "created_at": "2023-09-20T12:34:56.789Z"
             }
         },
     )
@@ -110,29 +103,7 @@ class TurbidityModel(BaseModel):
     
 class TurbidityCollection(BaseModel):
     turbidities: List[TurbidityModel]
-    
-    
-class FeedingModel(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    value: float = Field(...)
-    date_time: datetime = Field(
-        default_factory=datetime.now())
-
-    model_config = ConfigDict(
-        populate_by_name=True,
-        arbitrary_types_allowed=True,
-        json_schema_extra={
-            "example": {
-                "value": 30,
-                "date_time": "2023-09-20T12:34:56.789Z"
-            }
-        },
-    )
-    
-    
-class FeedingCollections(BaseModel):
-    turbidities: List[FeedingModel]
-    
+   
     
 class Token(BaseModel):
     access_token: str
