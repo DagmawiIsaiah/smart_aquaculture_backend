@@ -1,6 +1,8 @@
+# importing necessry packages and dependcies
 from datetime import datetime
 from typing import Optional, List
 
+# pytdantic doeses parameter or data validation
 from pydantic import ConfigDict, BaseModel, Field, EmailStr
 from pydantic.functional_validators import BeforeValidator
 
@@ -39,7 +41,6 @@ class UserCollection(BaseModel):
 
 class TemperatureModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    user_id: Optional[PyObjectId] = Field(alias="user_id", default=None)
     value: float = Field(...)
     date_time: datetime = Field(
         default_factory=datetime.now())
@@ -49,7 +50,6 @@ class TemperatureModel(BaseModel):
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
-                "user_id": "asd84a6w5d184awd",
                 "value": 30,
                 "date_time": "2023-09-20T12:34:56.789Z"
             }

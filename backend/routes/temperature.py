@@ -10,8 +10,8 @@ router = APIRouter(prefix="/temperature", tags=["Temperature"])
           response_model=TemperatureModel,
           status_code=status.HTTP_201_CREATED,
           response_model_by_alias=False,)
-async def add_temperature(temperature: TemperatureModel = Body(...), current_user: dict = Depends(get_current_user)):
-    temperature.user_id = current_user["_id"]
+async def add_temperature(temperature: TemperatureModel = Body(...)):
+    
     new_temp = await temperature_collection.insert_one(
         temperature.model_dump(by_alias=True, exclude=["id"])
     )
