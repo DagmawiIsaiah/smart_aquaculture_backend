@@ -1,7 +1,13 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
 from backend.routes import user, temperature, ph, turbidity, auth, real_time_stats
+
+# Load from .env file
+load_dotenv()
 
 app = FastAPI()
 

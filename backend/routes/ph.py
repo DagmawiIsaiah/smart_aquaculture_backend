@@ -22,6 +22,7 @@ async def add_ph(ph: PHModel = Body(...)):
 @router.get("/")
 async def get_phs():
     try:
+        
         return PHCollections(
             phs=await ph_collection.find().to_list(10)
         )
